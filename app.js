@@ -3,6 +3,10 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var cors = require("cors");
+
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://127.0.0.1:27017/desarrolloweb");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -15,7 +19,7 @@ var app = express();
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
-
+app.use(cors());
 app.use("/", router);
 app.use(logger("dev"));
 app.use(express.json());
@@ -23,6 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+//Middleware
 router.use((req, res, next) => {
     if (
         req.headers.authorization &&
@@ -30,7 +35,7 @@ router.use((req, res, next) => {
     ) {
         next();
     } else {
-        res.json({ error: "no se esta enviando nada" });
+        res.json(401).json({ error: "No se está enviando nada" });
     }
 });
 
