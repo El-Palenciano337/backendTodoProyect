@@ -1,11 +1,28 @@
 var express = require("express");
 var router = express.Router();
+const mongoose = require("mongoose");
+/* const { response } = require("../app"); */
 
 let goals = [];
 
+const goalInit = mongoose.model(
+    "goals",
+    {
+        name: String,
+        description: String,
+        dueDate: String,
+    },
+    "goals"
+);
+
 /* GET users listing. */
 router.get("/getGoals", function (req, res, next) {
-    res.json(goals);
+    goalInit
+        .find({})
+        .then((response) => res.status(200).json(response))
+        .catch((err) => {
+            res.status(500).json(err);
+        });
 });
 
 router.post("/addGoals", function (req, res, next) {
