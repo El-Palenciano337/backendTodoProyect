@@ -35,23 +35,17 @@ router.delete("/removeTask/:id", function (req, res, next) {
     } else {
         res.status(400).json({});
     }
+});
 
-    router.post("/addTask", function (req, res, next) {
-        if (
-            req.body &&
-            req.body &&
-            req.body.name &&
-            req.body.description &&
-            req.body.dueDate
-        ) {
-            const task = new taskInit(req.body);
-            task.save()
-                .then(() => res.status(200).json({}))
-                .catch((err) => res.status(500).json(err));
-        } else {
-            res.status(400).json(tasks);
-        }
-    });
+router.post("/addTask", function (req, res, next) {
+    if (req.body && req.body.name && req.body.description && req.body.dueDate) {
+        const task = new taskInit(req.body);
+        task.save()
+            .then(() => res.status(200).json({}))
+            .catch((err) => res.status(500).json(err));
+    } else {
+        res.status(400).json(tasks);
+    }
 });
 
 module.exports = router;
